@@ -26,10 +26,12 @@ Route::group(['prefix' => 'verify', 'middleware' => 'auth:sanctum'], function ()
     Route::get('verify-email/{id}/{hash}', [\App\Http\Controllers\EmailVerificationController::class, 'verify'])->name('verification.verify');
 });
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
+Route::group(['middleware' => ['auth:sanctum', 'isVerified']], function () {
     Route::apiResources([
         'posts' => \App\Http\Controllers\PostController::class,
     ]);
 
     Route::get('users/{searchKey}', [\App\Http\Controllers\SearchController::class, 'search']);
 });
+
+Route::post('image', [\App\Http\Controllers\AuthController::class, 'image']);

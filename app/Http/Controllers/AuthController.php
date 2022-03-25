@@ -9,6 +9,7 @@ use App\Notifications\TestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 /**
  *
@@ -91,5 +92,15 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'Logged out'
         ], 201);
+    }
+
+    public function image(Request $request)
+    {
+        $image = $request->file('image')->store('public/images');
+
+        $url = url('/').Storage::url($image);
+        return response()->json([
+            'image' => $url,
+        ]);
     }
 }
