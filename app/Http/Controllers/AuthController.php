@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
+use App\Http\Requests\ChangeProfilePictureRequest;
 use App\Models\User;
 use App\Notifications\TestNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use function GuzzleHttp\Promise\all;
 
 /**
  *
@@ -71,6 +73,11 @@ class AuthController extends Controller
             ], 401);
         }
 
+        $user->update([
+            'online' => true
+        ]);
+        $user->save();
+
         $accessToken = $user->createToken('accessToken')->plainTextToken;
 
         return response()->json([
@@ -86,6 +93,10 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $user = $request->user();
+        $user->update([
+            'online' => false
+        ]);
+        $user->save();
 
         $user->currentAccessToken()->delete();
 
@@ -94,11 +105,17 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function image(Request $request)
+    public function image(ChangeProfilePictureRequest $request)
     {
         $image = $request->file('image')->store('public/images');
+        $url = url('/') . Storage::url($image);
 
-        $url = url('/').Storage::url($image);
+        $user = $request->user();
+        $user->update([
+            'profile_picture' => $url
+        ]);
+        $user->save();
+
         return response()->json([
             'image' => $url,
         ]);

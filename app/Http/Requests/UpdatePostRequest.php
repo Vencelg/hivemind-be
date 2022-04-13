@@ -26,7 +26,7 @@ class UpdatePostRequest extends FormRequest
         return [
             'header' => 'string',
             'body' => 'string',
-            'image' => 'string|url',
+            'image' => 'image',
             'user_id' => 'int|exists:App\Models\User,id'
         ];
     }

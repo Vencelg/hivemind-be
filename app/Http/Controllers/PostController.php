@@ -60,7 +60,7 @@ class PostController extends Controller
 
         $post = Post::find($id);
 
-        if (!$post instanceof Post) {
+        if (!$post) {
             return response()->json([
                 'message' => 'Post does not exist'
             ], 400);
