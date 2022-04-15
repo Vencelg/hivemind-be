@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    /**
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index()
     {
         $posts = Post::with('user')->get();
@@ -19,6 +22,10 @@ class PostController extends Controller
     }
 
 
+    /**
+     * @param StorePostRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(StorePostRequest $request)
     {
         $validation = $request->validated();
@@ -38,6 +45,10 @@ class PostController extends Controller
     }
 
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function show($id)
     {
         $post = Post::with(['user'])->where('id', $id)->get();
@@ -54,6 +65,11 @@ class PostController extends Controller
     }
 
 
+    /**
+     * @param UpdatePostRequest $request
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function update(UpdatePostRequest $request, $id)
     {
         $validation = $request->validated();
@@ -75,6 +91,10 @@ class PostController extends Controller
     }
 
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy($id)
     {
         $post = Post::find($id);

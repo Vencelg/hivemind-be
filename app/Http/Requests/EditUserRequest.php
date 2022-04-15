@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ChangeProfilePictureRequest extends FormRequest
+class EditUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,9 @@ class ChangeProfilePictureRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => 'required|image'
+            'name' => 'string',
+            'username' => 'string',
+            'profile_picture' => 'image',
         ];
     }
 }

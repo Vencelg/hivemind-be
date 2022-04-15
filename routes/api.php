@@ -19,6 +19,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
     Route::post('register', [\App\Http\Controllers\AuthController::class, 'register']);
     Route::get('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->middleware("auth:sanctum");
+    Route::get('profile', [\App\Http\Controllers\AuthController::class, 'profile'])->middleware("auth:sanctum");
+    Route::post('editUser', [\App\Http\Controllers\AuthController::class, 'editUser'])->middleware("auth:sanctum");
 });
 
 Route::group(['prefix' => 'verify', 'middleware' => 'auth:sanctum'], function () {
@@ -27,7 +29,6 @@ Route::group(['prefix' => 'verify', 'middleware' => 'auth:sanctum'], function ()
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'isVerified']], function () {
-    Route::post('image', [\App\Http\Controllers\AuthController::class, 'image']);
     Route::apiResources([
         'posts' => \App\Http\Controllers\PostController::class,
     ]);

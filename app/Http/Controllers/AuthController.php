@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Http\Requests\ChangeProfilePictureRequest;
+use App\Http\Requests\EditUserRequest;
 use App\Models\User;
 use App\Notifications\TestNotification;
 use Illuminate\Http\Request;
@@ -105,19 +106,38 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function image(ChangeProfilePictureRequest $request)
+    public function profile(Request $request)
     {
-        $image = $request->file('image')->store('public/images');
-        $url = url('/') . Storage::url($image);
-
         $user = $request->user();
-        $user->update([
-            'profile_picture' => $url
+
+        $userPosts = $user->posts;
+
+        return response()->json([
+            'profile' => $user
         ]);
+    }
+
+    public function editUser(EditUserRequest $request)
+    {
+        $request->validated();
+        $user = $request->user();
+
+        if ($request->file('profile_picture')) {
+            $image = $request->file('profile_picture')->store('public/images');
+            $url = url('/') . Storage::url($image);
+            $user->update([
+                'name' => $request->name,
+                'username' => $request->username,
+                'profile_picture' => $url,
+            ]);
+        }else {
+            $user->update($request->all());
+        }
+
         $user->save();
 
         return response()->json([
-            'image' => $url,
+            'user' => $user,
         ]);
     }
 }
