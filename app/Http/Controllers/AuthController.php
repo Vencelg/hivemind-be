@@ -6,6 +6,7 @@ use App\Http\Requests\AuthLoginRequest;
 use App\Http\Requests\AuthRegisterRequest;
 use App\Http\Requests\ChangeProfilePictureRequest;
 use App\Http\Requests\EditUserRequest;
+use App\Http\Requests\UserProfileRequest;
 use App\Models\User;
 use App\Notifications\TestNotification;
 use Illuminate\Http\Request;
@@ -106,11 +107,12 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function profile(Request $request)
+    public function userProfile(UserProfileRequest $request)
     {
-        $user = $request->user();
+        $request->validated();
+        $id = $request->user_id;
 
-        $userPosts = $user->posts;
+        $user = User::with('posts')->where('id', $id)->get();
 
         return response()->json([
             'profile' => $user

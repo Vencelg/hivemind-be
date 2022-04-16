@@ -19,7 +19,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
     Route::post('register', [\App\Http\Controllers\AuthController::class, 'register']);
     Route::get('logout', [\App\Http\Controllers\AuthController::class, 'logout'])->middleware("auth:sanctum");
-    Route::get('profile', [\App\Http\Controllers\AuthController::class, 'profile'])->middleware("auth:sanctum");
+    Route::post('userProfile', [\App\Http\Controllers\AuthController::class, 'userProfile'])->middleware("auth:sanctum");
     Route::post('editUser', [\App\Http\Controllers\AuthController::class, 'editUser'])->middleware("auth:sanctum");
 });
 
