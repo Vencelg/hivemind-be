@@ -6,6 +6,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -30,12 +31,24 @@ class PostController extends Controller
     {
         $validation = $request->validated();
 
-        $newPost = new Post([
-            'header' => $request->header,
-            'body' => $request->body,
-            'image' => $request->image,
-            'user_id' => $request->user_id,
-        ]);
+        if ($request->file('image')) {
+            $image = $request->file('image')->store('public/images');
+            $url = url('/') . Storage::url($image);
+
+            $newPost = new Post([
+                'header' => $request->header,
+                'body' => $request->body,
+                'image' => $url,
+                'user_id' => $request->user_id,
+            ]);
+        } else {
+            $newPost = new Post([
+                'header' => $request->header,
+                'body' => $request->body,
+                'image' => null,
+                'user_id' => $request->user_id,
+            ]);
+        }
 
         $newPost->save();
 
@@ -82,7 +95,19 @@ class PostController extends Controller
             ], 400);
         }
 
-        $post->update($request->all());
+        if ($request->file('image')) {
+            $image = $request->file('image')->store('public/images');
+            $url = url('/') . Storage::url($image);
+
+            $post = new Post([
+                'header' => $request->header,
+                'body' => $request->body,
+                'image' => $url,
+            ]);
+        } else {
+            $post->update($request->all());
+        }
+
         $post->save();
 
         return response()->json([

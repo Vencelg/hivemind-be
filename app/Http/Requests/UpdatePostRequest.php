@@ -27,7 +27,6 @@ class UpdatePostRequest extends FormRequest
             'header' => 'string',
             'body' => 'string',
             'image' => 'image',
-            'user_id' => 'int|exists:App\Models\User,id'
         ];
     }
 }

@@ -112,10 +112,10 @@ class AuthController extends Controller
         $request->validated();
         $id = $request->user_id;
 
-        $user = User::with('posts')->where('id', $id)->get();
+        $user = User::with('posts')->firstWhere('id', $id)->get();
 
         return response()->json([
-            'profile' => $user
+            'profile' => $user[0]
         ]);
     }
 
