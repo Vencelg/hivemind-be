@@ -64,7 +64,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::with(['user'])->where('id', $id)->get();
+        $post = Post::with(['user', 'comments'])->where('id', $id)->get();
 
         if (!$post) {
             return response()->json([
@@ -99,9 +99,10 @@ class PostController extends Controller
             $image = $request->file('image')->store('public/images');
             $url = url('/') . Storage::url($image);
 
-            $post = new Post([
+            $post->update([
                 'header' => $request->header,
                 'body' => $request->body,
+                'upvotes' => $request->upvotes,
                 'image' => $url,
             ]);
         } else {
@@ -124,7 +125,7 @@ class PostController extends Controller
     {
         $post = Post::find($id);
 
-        if (!($post instanceof Subject)) {
+        if (!($post instanceof Post)) {
             return response()->json([
                 'message' => 'Post does not exist'
             ], 400);

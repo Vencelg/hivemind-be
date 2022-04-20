@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->string('header');
             $table->string('body');
             $table->string('image')->nullable();
-            $table->integer('upvotes');
+            $table->integer('upvotes')->default(0);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });

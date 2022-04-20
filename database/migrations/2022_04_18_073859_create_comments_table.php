@@ -17,8 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
             $table->foreignId('post_id')->constrained()->cascadeOnDelete();
-            $table->string('content');
-            $table->integer('upvotes');
+            $table->string('comment_content');
+            $table->integer('upvotes')->default(0);
             $table->timestamps();
         });
     }
