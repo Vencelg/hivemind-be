@@ -54,7 +54,7 @@ class CommentController extends Controller
      */
     public function show($id)
     {
-        $comment = Comment::with(['post'])->where('id', $id)->get();
+        $comment = Comment::with(['post', 'user', 'responses'])->where('id', $id)->get();
 
         if (!$comment) {
             return response()->json([
@@ -76,7 +76,7 @@ class CommentController extends Controller
      */
     public function update(UpdateCommentRequest $request, $id)
     {
-        $validation = $request->validated();
+        $request->validated();
 
         $comment = Comment::find($id);
 

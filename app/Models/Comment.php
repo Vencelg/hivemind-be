@@ -9,6 +9,9 @@ class Comment extends Model
 {
     use HasFactory;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'user_id',
         'post_id',
@@ -24,8 +27,19 @@ class Comment extends Model
         return $this->belongsTo(Post::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
     }
 }

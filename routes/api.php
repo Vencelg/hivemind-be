@@ -32,6 +32,7 @@ Route::group(['middleware' => ['auth:sanctum', 'isVerified']], function () {
     Route::apiResources([
         'posts' => \App\Http\Controllers\PostController::class,
         'comments' => \App\Http\Controllers\CommentController::class,
+        'responses' => \App\Http\Controllers\ResponseController::class,
     ]);
 
     Route::get('users/{searchKey}', [\App\Http\Controllers\SearchController::class, 'search']);

@@ -15,6 +15,10 @@ return new class extends Migration
     {
         Schema::create('responses', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('comment_id')->constrained()->cascadeOnDelete();
+            $table->string('response_content');
+            $table->integer('upvotes')->default(0);
             $table->timestamps();
         });
     }

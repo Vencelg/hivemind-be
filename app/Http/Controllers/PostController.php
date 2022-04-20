@@ -29,7 +29,7 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
-        $validation = $request->validated();
+        $request->validated();
 
         if ($request->file('image')) {
             $image = $request->file('image')->store('public/images');
@@ -64,7 +64,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::with(['user', 'comments'])->where('id', $id)->get();
+        $post = Post::with(['user', 'comments.responses'])->where('id', $id)->get();
 
         if (!$post) {
             return response()->json([
@@ -85,7 +85,7 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, $id)
     {
-        $validation = $request->validated();
+        $request->validated();
 
         $post = Post::find($id);
 
