@@ -131,6 +131,10 @@ class PostController extends Controller
             ], 400);
         }
 
+        $imagePath = substr($post->image, -51);
+
+        Storage::delete('public/'.$imagePath);
+
         $post->delete();
 
         return response()->json([
