@@ -33,7 +33,6 @@ Route::group(['middleware' => ['auth:sanctum', 'isVerified']], function () {
         'posts' => \App\Http\Controllers\PostController::class,
         'comments' => \App\Http\Controllers\CommentController::class,
         'responses' => \App\Http\Controllers\ResponseController::class,
-        'friendRequests' => \App\Http\Controllers\FriendRequestController::class,
     ]);
 
     Route::get('users/{searchKey}', [\App\Http\Controllers\SearchController::class, 'search']);
