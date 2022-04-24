@@ -61,17 +61,20 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function friendRequests() {
-        return $this->hasMany(FriendRequest::class);
+    public function friendRequests()
+    {
+        return $this->hasMany(Friend::class, 'friend_id')
+            ->where('accepted', false);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function friendRequestsSent() {
-        return $this->hasMany(FriendRequest::class, 'sender_id', 'id');
+    public function friendsOfThisUser()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')->withPivot('accepted')->wherePivot('accepted', true);
     }
+
+    public function thisUserFriendOf()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')->withPivot('accepted')->wherePivot('accepted', true);
+    }
+
 }
