@@ -29,6 +29,11 @@ Route::group(['prefix' => 'verify', 'middleware' => 'auth:sanctum'], function ()
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'isVerified']], function () {
+    
+    Route::post('friends', [\App\Http\Controllers\FriendController::class, 'store']);
+    Route::put('friends', [\App\Http\Controllers\FriendController::class, 'update']);
+    Route::delete('friends', [\App\Http\Controllers\FriendController::class, 'destroy']);
+
     Route::apiResources([
         'posts' => \App\Http\Controllers\PostController::class,
         'comments' => \App\Http\Controllers\CommentController::class,

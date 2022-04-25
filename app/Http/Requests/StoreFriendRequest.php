@@ -13,7 +13,7 @@ class StoreFriendRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class StoreFriendRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'user_id' => 'required|int|exists:App\Models\User,id',
+            'friend_id' => 'required|int|exists:App\Models\User,id',
         ];
     }
 }
