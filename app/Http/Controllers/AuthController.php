@@ -29,7 +29,7 @@ class AuthController extends Controller
         $user = $request->user();
 
         return response()->json([
-            'message' => $user
+            'user' => $user
         ], 201);
     }
 
