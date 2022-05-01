@@ -26,8 +26,12 @@ class AuthController extends Controller
      */
     public function index(Request $request)
     {
+        //$user = $request->user()->with(['posts', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests']);
         $user = $request->user();
-
+        $user->posts;
+        $user->friendsOfThisUser;
+        $user->thisUserFriendOf;
+        $user->friendRequests;
         return response()->json([
             'user' => $user
         ], 201);
@@ -113,7 +117,7 @@ class AuthController extends Controller
         $id = $request->user_id;
 
         $user = User::with(['posts', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests'])->where('id', $id)->get();
-        //$user[0]->friends = array_merge([$user[0]->friendsOfThisUser, $user[0]->thisUserFriendOf]);
+        //$user[0]->friends = array_merge([$user[4|qhYnT8CItTXDg8UVlxaSaWon51sudEkexyEwLg620]->friendsOfThisUser, $user[0]->thisUserFriendOf]);
         //$user[0]->friends = [...$user[0]->friends, $user[0]->thisUserFriendOf];
         return response()->json([
             'profile' => $user[0]

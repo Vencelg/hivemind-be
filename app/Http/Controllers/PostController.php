@@ -15,7 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('user')->get();
+        $posts = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.responses'])->get();
 
         return response()->json([
             'posts' => $posts
@@ -64,7 +64,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::with(['user', 'comments.responses'])->where('id', $id)->get();
+        $post = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.responses'])->where('id', $id)->get();
 
         if (!$post) {
             return response()->json([
@@ -133,7 +133,7 @@ class PostController extends Controller
 
         $imagePath = substr($post->image, -51);
 
-        Storage::delete('public/'.$imagePath);
+        Storage::delete('public/' . $imagePath);
 
         $post->delete();
 
