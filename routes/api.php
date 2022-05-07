@@ -35,8 +35,13 @@ Route::group(['middleware' => 'cors'], function () {
         Route::put('friends/{id}', [\App\Http\Controllers\FriendController::class, 'update']);
         Route::delete('friends/{id}', [\App\Http\Controllers\FriendController::class, 'destroy']);
 
+        Route::get('posts', [\App\Http\Controllers\PostController::class, 'index']);
+        Route::post('posts', [\App\Http\Controllers\PostController::class, 'store']);
+        Route::get('posts/{id}', [\App\Http\Controllers\PostController::class, 'show']);
+        Route::post('posts/{id}', [\App\Http\Controllers\PostController::class, 'update']);
+        Route::delete('posts/{id}', [\App\Http\Controllers\PostController::class, 'destroy']);
+
         Route::apiResources([
-            'posts' => \App\Http\Controllers\PostController::class,
             'comments' => \App\Http\Controllers\CommentController::class,
             'responses' => \App\Http\Controllers\ResponseController::class,
         ]);

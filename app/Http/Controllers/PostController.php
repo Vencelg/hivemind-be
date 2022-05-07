@@ -95,14 +95,13 @@ class PostController extends Controller
             ], 400);
         }
 
-        if ($request->file('image')) {
+        if ($request->hasFile('image')) {
+
             $image = $request->file('image')->store('public/images');
             $url = url('/') . Storage::url($image);
 
+            $post->update($request->all());
             $post->update([
-                'header' => $request->header,
-                'body' => $request->body,
-                'upvotes' => $request->upvotes,
                 'image' => $url,
             ]);
         } else {
