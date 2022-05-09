@@ -27,7 +27,7 @@ class UpdatePostRequest extends FormRequest
             'header' => 'string',
             'body' => 'string',
             'upvotes' => 'int',
-            'image' => 'required|file',
+            'image' => 'file',
         ];
     }
 }
