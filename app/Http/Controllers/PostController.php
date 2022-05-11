@@ -52,6 +52,7 @@ class PostController extends Controller
 
         $newPost->save();
 
+        $newPost = Post::with(['user', 'comments', 'comments.user', 'comments.responses.user'])->where('id', $newPost->id)->first();
         return response()->json([
             'post' => $newPost
         ], 200);
