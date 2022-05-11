@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Notifications\VerifyEmailNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -77,4 +78,13 @@ class User extends Authenticatable
         return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')->withPivot('accepted')->wherePivot('accepted', true);
     }
 
+    /**
+     * Send the email verification notification.
+     *
+     * @return void
+     */
+    /*public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailNotification());
+    }*/
 }

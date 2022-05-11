@@ -41,6 +41,9 @@ class CommentController extends Controller
 
         $newComment->save();
 
+        $newComment->user;
+        $newComment->responses;
+
         return response()->json([
             'comment' => $newComment
         ], 200);

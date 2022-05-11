@@ -24,7 +24,7 @@ class IsVerifiedMiddleware
         } else {
             return response()->json([
                 'error' => 'User not verified'
-            ]);
+            ], 401);
         }
     }
 }

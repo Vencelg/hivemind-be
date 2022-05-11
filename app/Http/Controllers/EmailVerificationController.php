@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Http\Request;
 
@@ -10,12 +11,20 @@ use Illuminate\Http\Request;
  */
 class EmailVerificationController extends Controller
 {
+
     /**
      * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse
+     * @throws AuthenticationException
      */
     public function verify(Request $request)
     {
+        auth()->loginUsingId($request->route('id'));
+
+        if ($request->route('id') != $request->user()->getKey()) {
+            throw new AuthenticationException();
+        }
+
         if ($request->user()->hasVerifiedEmail()) {
             return response()->json([
                 'message' => 'Email already verified'
@@ -26,9 +35,7 @@ class EmailVerificationController extends Controller
             event(new Verified($request->user()));
         }
 
-        return response()->json([
-            'message' => 'Email has been verified'
-        ], 200);
+        return redirect()->away(env("FRONTEND_VERIFICATION_ROUTE"));
     }
 
     /**

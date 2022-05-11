@@ -26,7 +26,6 @@ Route::group(['middleware' => 'cors'], function () {
 
     Route::group(['prefix' => 'verify', 'middleware' => 'auth:sanctum'], function () {
         Route::post('resend', [\App\Http\Controllers\EmailVerificationController::class, 'resend']);
-        Route::get('verify-email/{id}/{hash}', [\App\Http\Controllers\EmailVerificationController::class, 'verify'])->name('verification.verify');
     });
 
     Route::group(['middleware' => ['auth:sanctum', 'isVerified']], function () {
