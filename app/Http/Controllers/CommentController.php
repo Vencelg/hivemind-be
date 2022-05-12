@@ -43,6 +43,7 @@ class CommentController extends Controller
 
         $newComment->user;
         $newComment->responses;
+        $newComment->upvotes;
 
         return response()->json([
             'comment' => $newComment
@@ -95,6 +96,7 @@ class CommentController extends Controller
         ]);
 
         $comment->save();
+        $comment = Comment::with('post', 'user', 'responses')->where('id', $comment->id)->first();
 
         return response()->json([
             'comment' => $comment
