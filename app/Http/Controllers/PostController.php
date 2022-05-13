@@ -30,6 +30,7 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         $request->validated();
+        $newPost = [];
 
         if ($request->file('image')) {
             $image = $request->file('image')->store('public/images');
@@ -52,7 +53,7 @@ class PostController extends Controller
 
         $newPost->save();
 
-        $newPost = Post::with(['user', 'comments', 'comments.user', 'comments.responses.user'])->where('id', $newPost->id)->first();
+        $newPost = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments', 'comments.user', 'comments.responses.user'])->where('id', $newPost->id)->first();
         return response()->json([
             'post' => $newPost
         ], 200);
@@ -65,7 +66,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.responses'])->where('id', $id)->get();
+        $post = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user'])->where('id', $id)->get();
 
         if (!$post) {
             return response()->json([
@@ -110,6 +111,7 @@ class PostController extends Controller
         }
 
         $post->save();
+        $post = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user'])->where('id', $post->id)->first();
 
         return response()->json([
             'post' => $post

@@ -94,7 +94,7 @@ class CommentController extends Controller
         ]);
 
         $comment->save();
-        $comment = Comment::with('post', 'user', 'responses')->where('id', $comment->id)->first();
+        $comment = Comment::with('post', 'user', 'responses.user')->where('id', $comment->id)->first();
 
         return response()->json([
             'comment' => $comment
