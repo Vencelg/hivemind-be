@@ -41,9 +41,7 @@ class CommentController extends Controller
 
         $newComment->save();
 
-        $newComment->user;
-        $newComment->responses;
-        $newComment->upvotes;
+        $newComment = Comment::with('post', 'user', 'responses')->where('id', $newComment->id)->first();
 
         return response()->json([
             'comment' => $newComment

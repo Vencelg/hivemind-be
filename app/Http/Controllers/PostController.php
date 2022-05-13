@@ -15,7 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses'])->get();
+        $posts = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user'])->get();
 
         return response()->json([
             'posts' => $posts

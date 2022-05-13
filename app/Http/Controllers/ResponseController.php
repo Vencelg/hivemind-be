@@ -17,7 +17,7 @@ class ResponseController extends Controller
      */
     public function index()
     {
-        $responses = Response::with('comment')->get();
+        $responses = Response::with(['comment', 'user'])->get();
 
         return response()->json([
             'responses' => $responses
@@ -27,7 +27,7 @@ class ResponseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreResponseRequest $request)
@@ -42,6 +42,9 @@ class ResponseController extends Controller
 
         $newResponse->save();
 
+        $newResponse = Response::with(['comment', 'user'])->where('id', $newResponse->id)->first();
+
+
         return response()->json([
             'response' => $newResponse
         ], 200);
@@ -50,7 +53,7 @@ class ResponseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
@@ -71,8 +74,8 @@ class ResponseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function update(UpdateResponseRequest $request, $id)
@@ -94,6 +97,8 @@ class ResponseController extends Controller
 
         $response->save();
 
+        $response = Response::with(['comment', 'user'])->where('id', $response->id)->first();
+
         return response()->json([
             'response' => $response
         ]);
@@ -102,7 +107,7 @@ class ResponseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
