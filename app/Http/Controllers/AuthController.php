@@ -133,11 +133,11 @@ class AuthController extends Controller
             $image = $request->file('profile_picture')->store('public/images');
             $url = url('/') . Storage::url($image);
             $user->update([
-                'name' => $request->name,
-                'username' => $request->username,
                 'profile_picture' => $url,
             ]);
-        }else {
+            $user->update($request->all());
+
+        } else {
             $user->update($request->all());
         }
 
