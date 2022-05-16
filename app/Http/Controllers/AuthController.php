@@ -130,13 +130,12 @@ class AuthController extends Controller
         $user = $request->user();
 
         if ($request->file('profile_picture')) {
+            $user->update($request->all());
             $image = $request->file('profile_picture')->store('public/images');
             $url = url('/') . Storage::url($image);
             $user->update([
                 'profile_picture' => $url,
             ]);
-            $user->update($request->all());
-
         } else {
             $user->update($request->all());
         }
