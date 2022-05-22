@@ -116,7 +116,7 @@ class AuthController extends Controller
         $request->validated();
         $id = $request->user_id;
 
-        $user = User::with(['posts', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests'])->where('id', $id)->get();
+        $user = User::with(['posts.user', 'posts.comments.user', 'posts.comments.responses.user', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests'])->where('id', $id)->get();
         //$user[0]->friends = array_merge([$user[4|qhYnT8CItTXDg8UVlxaSaWon51sudEkexyEwLg620]->friendsOfThisUser, $user[0]->thisUserFriendOf]);
         //$user[0]->friends = [...$user[0]->friends, $user[0]->thisUserFriendOf];
         return response()->json([
