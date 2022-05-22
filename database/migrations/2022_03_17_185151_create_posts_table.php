@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->string('header');
-            $table->string('body');
+            $table->string('body', 1000);
             $table->string('image')->nullable();
             $table->integer('upvotes')->default(0);
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
