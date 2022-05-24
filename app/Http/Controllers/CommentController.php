@@ -88,10 +88,7 @@ class CommentController extends Controller
             ], 400);
         }
 
-        $comment->update([
-            'comment_content' => $request->comment_content,
-            'upvotes' => $request->upvotes,
-        ]);
+        $comment->update($request->all());
 
         $comment->save();
         $comment = Comment::with('post', 'user', 'responses.user')->where('id', $comment->id)->first();

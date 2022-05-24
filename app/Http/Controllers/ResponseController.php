@@ -90,10 +90,7 @@ class ResponseController extends Controller
             ], 400);
         }
 
-        $response->update([
-            'response_content' => $request->response_content,
-            'upvotes' => $request->upvotes,
-        ]);
+        $response->update($request->all());
 
         $response->save();
 

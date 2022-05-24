@@ -133,6 +133,7 @@ class AuthController extends Controller
             $user->update($request->all());
             $image = $request->file('profile_picture')->store('public/images');
             $url = url('/') . Storage::url($image);
+            $user->update($request->all());
             $user->update([
                 'profile_picture' => $url,
             ]);
@@ -141,6 +142,8 @@ class AuthController extends Controller
         }
 
         $user->save();
+
+        $user = User::with(['posts.user', 'posts.comments.user', 'posts.comments.responses.user', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests'])->where('id', $user->id)->first();
 
         return response()->json([
             'user' => $user,
