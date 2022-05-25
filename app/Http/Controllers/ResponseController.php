@@ -130,7 +130,7 @@ class ResponseController extends Controller
         $response->likes()->attach($request->user()->id);
 
         return response()->json([
-            'message' => 'Response liked'
+            'likes' => $response->likes
         ]);
     }
 

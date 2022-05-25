@@ -36,7 +36,7 @@ Route::group(['middleware' => 'cors'], function () {
 
         Route::get('posts', [\App\Http\Controllers\PostController::class, 'index']);
         Route::get('posts/like/{id}', [\App\Http\Controllers\PostController::class, 'like']);
-        Route::get('posts/dislike/{id}', [\App\Http\Controllers\PostController::class, 'dislike']);
+        Route::delete('posts/dislike/{id}', [\App\Http\Controllers\PostController::class, 'dislike']);
         Route::post('posts', [\App\Http\Controllers\PostController::class, 'store']);
         Route::get('posts/{id}', [\App\Http\Controllers\PostController::class, 'show']);
         Route::post('posts/{id}', [\App\Http\Controllers\PostController::class, 'update']);
@@ -48,10 +48,10 @@ Route::group(['middleware' => 'cors'], function () {
         ]);
 
         Route::get('comments/like/{id}', [\App\Http\Controllers\CommentController::class, 'like']);
-        Route::get('comments/dislike/{id}', [\App\Http\Controllers\CommentController::class, 'dislike']);
+        Route::delete('comments/dislike/{id}', [\App\Http\Controllers\CommentController::class, 'dislike']);
 
         Route::get('responses/like/{id}', [\App\Http\Controllers\ResponseController::class, 'like']);
-        Route::get('responses/dislike/{id}', [\App\Http\Controllers\ResponseController::class, 'dislike']);
+        Route::delete('responses/dislike/{id}', [\App\Http\Controllers\ResponseController::class, 'dislike']);
 
         Route::get('users/{searchKey}', [\App\Http\Controllers\SearchController::class, 'search']);
     });

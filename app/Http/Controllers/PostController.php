@@ -159,7 +159,7 @@ class PostController extends Controller
         $post->likes()->attach($request->user()->id);
 
         return response()->json([
-            'message' => 'Post liked'
+            'likes' => $post->likes
         ]);
     }
 

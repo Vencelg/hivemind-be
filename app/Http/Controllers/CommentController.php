@@ -127,7 +127,7 @@ class CommentController extends Controller
         $comment->likes()->attach($request->user()->id);
 
         return response()->json([
-            'message' => 'Comment liked'
+            'likes' => $comment->likes
         ]);
     }
 
