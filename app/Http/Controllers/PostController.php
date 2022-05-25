@@ -15,7 +15,16 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user'])->get();
+        $posts = Post::with(['likes', 'user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user', 'comments.likes', 'comments.responses.likes'])->withCount('likes')->orderBy('created_at', 'DESC')->get();
+
+        foreach ($posts as $post) {
+            foreach ($post->comments as $comment) {
+                $comment->likes_count = count($comment->likes);
+                foreach ($comment->responses as $response) {
+                    $response->likes_count = count($response->likes);
+                }
+            }
+        }
 
         return response()->json([
             'posts' => $posts
@@ -53,7 +62,7 @@ class PostController extends Controller
 
         $newPost->save();
 
-        $newPost = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments', 'comments.user', 'comments.responses.user'])->where('id', $newPost->id)->first();
+        $newPost = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments', 'comments.user', 'comments.responses.user'])->withCount('likes')->where('id', $newPost->id)->first();
         return response()->json([
             'post' => $newPost
         ], 200);
@@ -66,7 +75,7 @@ class PostController extends Controller
      */
     public function show($id)
     {
-        $post = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user'])->where('id', $id)->get();
+        $post = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user'])->withCount('likes')->where('id', $id)->get();
 
         if (!$post) {
             return response()->json([
@@ -89,7 +98,7 @@ class PostController extends Controller
     {
         $request->validated();
 
-        $post = Post::find($id);
+        $post = Post::find($id)->withCount('likes');
 
         if (!$post) {
             return response()->json([
@@ -111,7 +120,7 @@ class PostController extends Controller
         }
 
         $post->save();
-        $post = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user'])->where('id', $post->id)->first();
+        $post = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user'])->withCount('likes')->where('id', $post->id)->first();
 
         return response()->json([
             'post' => $post
@@ -142,5 +151,25 @@ class PostController extends Controller
         return response()->json([
             'message' => 'Post deleted'
         ], 200);
+    }
+
+    public function like($id, Request $request) {
+        $post = Post::find($id);
+
+        $post->likes()->attach($request->user()->id);
+
+        return response()->json([
+            'message' => 'Post liked'
+        ]);
+    }
+
+    public function dislike($id, Request $request) {
+        $post = Post::find($id);
+
+        $post->likes()->detach($request->user()->id);
+
+        return response()->json([
+            'message' => 'Post disliked'
+        ]);
     }
 }

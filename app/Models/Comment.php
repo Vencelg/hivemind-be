@@ -42,4 +42,9 @@ class Comment extends Model
     {
         return $this->hasMany(Response::class);
     }
+
+    public function likes()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

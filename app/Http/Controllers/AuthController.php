@@ -26,12 +26,12 @@ class AuthController extends Controller
      */
     public function index(Request $request)
     {
-        //$user = $request->user()->with(['posts', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests']);
-        $user = $request->user();
-        $user->posts;
-        $user->friendsOfThisUser;
-        $user->thisUserFriendOf;
-        $user->friendRequests;
+        $user = User::with(['posts.user', 'posts.comments.likes', 'posts.comments.responses.likes', 'posts.comments.user', 'posts.comments.responses.user', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests.user'])->where('id', $request->user()->id)->first();
+
+        foreach ($user->posts as $post) {
+            $post->likes_count = count($post->likes);
+        }
+
         return response()->json([
             'user' => $user
         ], 201);
@@ -116,11 +116,20 @@ class AuthController extends Controller
         $request->validated();
         $id = $request->user_id;
 
-        $user = User::with(['posts.user', 'posts.comments.user', 'posts.comments.responses.user', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests'])->where('id', $id)->get();
-        //$user[0]->friends = array_merge([$user[4|qhYnT8CItTXDg8UVlxaSaWon51sudEkexyEwLg620]->friendsOfThisUser, $user[0]->thisUserFriendOf]);
-        //$user[0]->friends = [...$user[0]->friends, $user[0]->thisUserFriendOf];
+        $user = User::with(['posts.user', 'posts.comments.likes', 'posts.comments.responses.likes','posts.comments.user', 'posts.comments.responses.user', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests.user'])->where('id', $id)->first();
+
+        foreach ($user->posts as $post) {
+            $post->likes_count = count($post->likes);
+            foreach ($post->comments as $comment) {
+                $comment->likes_count = count($comment->likes);
+                foreach ($comment->responses as $response) {
+                    $response->likes_count = count($response->likes);
+                }
+            }
+        }
+
         return response()->json([
-            'profile' => $user[0]
+            'profile' => $user
         ]);
     }
 
@@ -144,7 +153,7 @@ class AuthController extends Controller
         $user->save();
 
         $user = User::with(['posts.user', 'posts.comments.user', 'posts.comments.responses.user', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests'])->where('id', $user->id)->first();
-
+        //$user->friendRequests->user;
         return response()->json([
             'user' => $user,
         ]);

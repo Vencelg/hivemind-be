@@ -70,21 +70,26 @@ class User extends Authenticatable
 
     public function friendsOfThisUser()
     {
-        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')->withPivot('accepted')->wherePivot('accepted', true);
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')->withPivot(['accepted', 'id'])->wherePivot('accepted', true);
     }
 
     public function thisUserFriendOf()
     {
-        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')->withPivot('accepted')->wherePivot('accepted', true);
+        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')->withPivot(['accepted', 'id'])->wherePivot('accepted', true);
     }
 
-    /**
-     * Send the email verification notification.
-     *
-     * @return void
-     */
-    /*public function sendEmailVerificationNotification()
+    public function likedPosts()
     {
-        $this->notify(new VerifyEmailNotification());
-    }*/
+        return $this->belongsToMany(Post::class);
+    }
+
+    public function likedComments()
+    {
+        return $this->belongsToMany(Comment::class);
+    }
+
+    public function likedResponses()
+    {
+        return $this->belongsToMany(Response::class);
+    }
 }

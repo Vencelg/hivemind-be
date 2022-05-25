@@ -123,4 +123,24 @@ class ResponseController extends Controller
             'message' => 'Response deleted'
         ], 200);
     }
+
+    public function like($id, Request $request) {
+        $response = Response::find($id);
+
+        $response->likes()->attach($request->user()->id);
+
+        return response()->json([
+            'message' => 'Response liked'
+        ]);
+    }
+
+    public function dislike($id, Request $request) {
+        $response = Response::find($id);
+
+        $response->likes()->detach($request->user()->id);
+
+        return response()->json([
+            'message' => 'Response disliked'
+        ]);
+    }
 }

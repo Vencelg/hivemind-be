@@ -120,4 +120,24 @@ class CommentController extends Controller
             'message' => 'Comment deleted'
         ], 200);
     }
+
+    public function like($id, Request $request) {
+        $comment = Comment::find($id);
+
+        $comment->likes()->attach($request->user()->id);
+
+        return response()->json([
+            'message' => 'Comment liked'
+        ]);
+    }
+
+    public function dislike($id, Request $request) {
+        $comment = Comment::find($id);
+
+        $comment->likes()->detach($request->user()->id);
+
+        return response()->json([
+            'message' => 'Comment disliked'
+        ]);
+    }
 }
