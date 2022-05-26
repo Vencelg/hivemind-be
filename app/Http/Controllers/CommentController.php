@@ -41,7 +41,7 @@ class CommentController extends Controller
 
         $newComment->save();
 
-        $newComment = Comment::with('post', 'user', 'responses')->where('id', $newComment->id)->first();
+        $newComment = Comment::with(['post', 'user', 'responses', 'likes'])->withCount('likes')->where('id', $newComment->id)->first();
 
         return response()->json([
             'comment' => $newComment
@@ -91,7 +91,7 @@ class CommentController extends Controller
         $comment->update($request->all());
 
         $comment->save();
-        $comment = Comment::with('post', 'user', 'responses.user')->where('id', $comment->id)->first();
+        $comment = Comment::with(['post', 'user', 'responses.user',  'likes'])->withCount('likes')->where('id', $comment->id)->first();
 
         return response()->json([
             'comment' => $comment

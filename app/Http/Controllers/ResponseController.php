@@ -42,7 +42,7 @@ class ResponseController extends Controller
 
         $newResponse->save();
 
-        $newResponse = Response::with(['comment', 'user'])->where('id', $newResponse->id)->first();
+        $newResponse = Response::with(['comment', 'user', 'likes'])->withCount('likes')->where('id', $newResponse->id)->first();
 
 
         return response()->json([
@@ -94,7 +94,7 @@ class ResponseController extends Controller
 
         $response->save();
 
-        $response = Response::with(['comment', 'user'])->where('id', $response->id)->first();
+        $response = Response::with(['comment', 'user', 'likes'])->withCount('likes')->where('id', $response->id)->first();
 
         return response()->json([
             'response' => $response
