@@ -62,7 +62,7 @@ class PostController extends Controller
 
         $newPost->save();
 
-        $newPost = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments', 'comments.user', 'comments.responses.user'])->withCount('likes')->where('id', $newPost->id)->first();
+        $newPost = Post::with(['likes', 'user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments', 'comments.user', 'comments.responses.user'])->withCount('likes')->where('id', $newPost->id)->first();
         return response()->json([
             'post' => $newPost
         ], 200);
@@ -98,7 +98,7 @@ class PostController extends Controller
     {
         $request->validated();
 
-        $post = Post::find($id)->withCount('likes');
+        $post = Post::find($id);
 
         if (!$post) {
             return response()->json([
@@ -120,7 +120,7 @@ class PostController extends Controller
         }
 
         $post->save();
-        $post = Post::with(['user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user'])->withCount('likes')->where('id', $post->id)->first();
+        $post = Post::with(['likes', 'user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user'])->withCount('likes')->where('id', $post->id)->first();
 
         return response()->json([
             'post' => $post
