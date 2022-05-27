@@ -122,6 +122,12 @@ class PostController extends Controller
         $post->save();
         $post = Post::with(['likes', 'user.posts', 'user.friendsOfThisUser', 'user.thisUserFriendOf', 'comments.user', 'comments.responses.user', 'comments.likes', 'comments.responses.likes'])->withCount('likes')->where('id', $post->id)->first();
 
+        foreach ($post->comments as $comment) {
+            $comment->likes_count = count($comment->likes);
+            foreach ($comment->responses as $response) {
+                $response->likes_count = count($response->likes);
+            }
+        }
         return response()->json([
             'post' => $post
         ]);
@@ -153,7 +159,8 @@ class PostController extends Controller
         ], 200);
     }
 
-    public function like($id, Request $request) {
+    public function like($id, Request $request)
+    {
         $post = Post::find($id);
 
         $post->likes()->attach($request->user()->id);
@@ -163,7 +170,8 @@ class PostController extends Controller
         ]);
     }
 
-    public function dislike($id, Request $request) {
+    public function dislike($id, Request $request)
+    {
         $post = Post::find($id);
 
         $post->likes()->detach($request->user()->id);
