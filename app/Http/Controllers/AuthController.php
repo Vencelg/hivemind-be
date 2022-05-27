@@ -30,6 +30,12 @@ class AuthController extends Controller
 
         foreach ($user->posts as $post) {
             $post->likes_count = count($post->likes);
+            foreach ($post->comments as $comment) {
+                $comment->likes_count = count($comment->likes);
+                foreach ($comment->responses as $response) {
+                    $response->likes_count = count($response->likes);
+                }
+            }
         }
 
         return response()->json([
