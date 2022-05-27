@@ -24,8 +24,8 @@ Route::group(['middleware' => 'cors'], function () {
         Route::post('editUser', [\App\Http\Controllers\AuthController::class, 'editUser'])->middleware("auth:sanctum");
     });
 
-    Route::group(['prefix' => 'verify', 'middleware' => 'auth:sanctum'], function () {
-        Route::post('resend', [\App\Http\Controllers\EmailVerificationController::class, 'resend']);
+    Route::group(['prefix' => 'verify', 'middleware' => ['auth:sanctum', 'throttle:resend']], function () {
+        Route::post('resend', [\App\Http\Controllers\EmailVerificationController::class, 'resend'])->name('resend');
     });
 
     Route::group(['middleware' => ['auth:sanctum', 'isVerified']], function () {
