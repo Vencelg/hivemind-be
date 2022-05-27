@@ -93,6 +93,10 @@ class CommentController extends Controller
         $comment->save();
         $comment = Comment::with(['post', 'user', 'responses.user', 'responses.likes','likes'])->withCount('likes')->where('id', $comment->id)->first();
 
+        foreach ($comment->responses as $response) {
+            $response->likes_count = count($response->likes);
+        }
+
         return response()->json([
             'comment' => $comment
         ]);
