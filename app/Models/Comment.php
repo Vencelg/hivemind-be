@@ -43,6 +43,9 @@ class Comment extends Model
         return $this->hasMany(Response::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function likes()
     {
         return $this->belongsToMany(User::class);

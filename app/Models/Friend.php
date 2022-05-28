@@ -9,13 +9,20 @@ class Friend extends Model
 {
     use HasFactory;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'user_id',
         'friend_id',
         'accepted',
     ];
 
-    public function user() {
+    /**
+     * @return mixed
+     */
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 }

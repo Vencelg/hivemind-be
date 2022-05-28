@@ -117,12 +117,16 @@ class AuthController extends Controller
         ], 201);
     }
 
+    /**
+     * @param UserProfileRequest $request
+     * @return mixed
+     */
     public function userProfile(UserProfileRequest $request)
     {
         $request->validated();
         $id = $request->user_id;
 
-        $user = User::with(['posts.user', 'posts.comments.likes', 'posts.comments.responses.likes','posts.comments.user', 'posts.comments.responses.user', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests.user'])->where('id', $id)->first();
+        $user = User::with(['posts.user', 'posts.comments.likes', 'posts.comments.responses.likes', 'posts.comments.user', 'posts.comments.responses.user', 'friendsOfThisUser', 'thisUserFriendOf', 'friendRequests.user'])->where('id', $id)->first();
 
         foreach ($user->posts as $post) {
             $post->likes_count = count($post->likes);
@@ -139,6 +143,10 @@ class AuthController extends Controller
         ]);
     }
 
+    /**
+     * @param EditUserRequest $request
+     * @return mixed
+     */
     public function editUser(EditUserRequest $request)
     {
         $request->validated();

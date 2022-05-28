@@ -159,6 +159,11 @@ class PostController extends Controller
         ], 200);
     }
 
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
     public function like($id, Request $request)
     {
         $post = Post::find($id);
@@ -170,6 +175,11 @@ class PostController extends Controller
         ]);
     }
 
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
     public function dislike($id, Request $request)
     {
         $post = Post::find($id);

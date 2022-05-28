@@ -91,7 +91,7 @@ class CommentController extends Controller
         $comment->update($request->all());
 
         $comment->save();
-        $comment = Comment::with(['post', 'user', 'responses.user', 'responses.likes','likes'])->withCount('likes')->where('id', $comment->id)->first();
+        $comment = Comment::with(['post', 'user', 'responses.user', 'responses.likes', 'likes'])->withCount('likes')->where('id', $comment->id)->first();
 
         foreach ($comment->responses as $response) {
             $response->likes_count = count($response->likes);
@@ -125,7 +125,13 @@ class CommentController extends Controller
         ], 200);
     }
 
-    public function like($id, Request $request) {
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
+    public function like($id, Request $request)
+    {
         $comment = Comment::find($id);
 
         $comment->likes()->attach($request->user()->id);
@@ -135,7 +141,13 @@ class CommentController extends Controller
         ]);
     }
 
-    public function dislike($id, Request $request) {
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
+    public function dislike($id, Request $request)
+    {
         $comment = Comment::find($id);
 
         $comment->likes()->detach($request->user()->id);

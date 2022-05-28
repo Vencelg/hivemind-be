@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //RateLimiter for resending emails
         RateLimiter::for('resend', function (\Illuminate\Http\Request $request) {
             return Limit::perMinutes(3, 1)->by($request->user()->id);
         });

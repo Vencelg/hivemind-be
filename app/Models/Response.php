@@ -36,6 +36,9 @@ class Response extends Model
         return $this->belongsTo(Comment::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function likes()
     {
         return $this->belongsToMany(User::class);

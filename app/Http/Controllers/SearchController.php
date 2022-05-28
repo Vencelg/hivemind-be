@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 
 class SearchController extends Controller
 {
+    /**
+     * @param string $searchKey
+     * @return mixed
+     */
     public function search(string $searchKey)
     {
         $users = User::all();

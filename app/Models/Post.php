@@ -9,6 +9,9 @@ class Post extends Model
 {
     use HasFactory;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'header',
         'body',
@@ -33,6 +36,9 @@ class Post extends Model
         return $this->hasMany(Comment::class);
     }
 
+    /**
+     * @return mixed
+     */
     public function likes()
     {
         return $this->belongsToMany(User::class);

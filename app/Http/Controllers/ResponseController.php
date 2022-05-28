@@ -124,7 +124,13 @@ class ResponseController extends Controller
         ], 200);
     }
 
-    public function like($id, Request $request) {
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
+    public function like($id, Request $request)
+    {
         $response = Response::find($id);
 
         $response->likes()->attach($request->user()->id);
@@ -134,7 +140,13 @@ class ResponseController extends Controller
         ]);
     }
 
-    public function dislike($id, Request $request) {
+    /**
+     * @param $id
+     * @param Request $request
+     * @return mixed
+     */
+    public function dislike($id, Request $request)
+    {
         $response = Response::find($id);
 
         $response->likes()->detach($request->user()->id);
